@@ -13,6 +13,11 @@ const Header = ({name}) => {
   return <h1>{name}</h1>
 }
 
+const Total = ({parts}) => {
+  const total = parts.reduce((total, part) => total + part.exercises, 0);
+  return <strong><p>total of {total} exercises</p></strong>
+}
+
 const Content = ({parts}) => {
   return (
     <div>
@@ -21,6 +26,7 @@ const Content = ({parts}) => {
           <Part key={part.id} part={part} />
         )}
       </ul>
+      <Total parts={parts} />
     </div>
   )
 }
