@@ -38,6 +38,23 @@ const App = () => {
       })
   }
 
+  const removePerson = (event) => {
+    event.preventDefault()
+
+    //better way to do this? seems janky
+    const id = Number(event.target.getAttribute("id")) 
+    const name = persons.find((person) => person.id === id).name
+
+    if (window.confirm(`Delete ${name}?`)) {
+      personService
+        .remove(id)
+        .then(() => {
+          const newPersons = persons.filter(person => person.id !== id)
+          setPersons(newPersons)
+        })
+    }
+  }
+
   const handleFilterChange = (event) => {
     setFilter(event.target.value)
   }
@@ -63,7 +80,7 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={filter}/>
+      <Persons persons={persons} filter={filter} remove={removePerson}/>
     </div>
   )
 }
