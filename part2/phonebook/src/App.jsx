@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Filter from './components/Filter'
+import Notification from './components/Notification'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import personService from './services/persons'
@@ -8,6 +9,7 @@ const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [notificationMessage, setNotificationMessage] = useState(null)
   const [filter, setFilter] = useState('')
 
   useEffect( () => {
@@ -36,20 +38,26 @@ const App = () => {
               }
               return person
             }))
-            setNewName('')
-            setNewNumber('')
+            setNotificationMessage(`Updated ${newPerson.name}`)
           })
+      } else {
+        return
       }
-      return
+    } else {
+      personService
+        .create(newPerson)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNotificationMessage(`Added ${newPerson.name}`)
+        })
     }
 
-    personService
-      .create(newPerson)
-      .then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson))
-        setNewName('')
-        setNewNumber('')
-      })
+    //tried refactoring, may have missed edge cases
+    setNewName('')
+    setNewNumber('')
+    setTimeout(() => {
+      setNotificationMessage(null)
+    }, 5000)
   }
 
   const removePerson = (event) => {
@@ -84,8 +92,9 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notificationMessage}/>
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
-      <h2>add a new</h2>
+      <h2>add a new person</h2>
       <PersonForm 
         addPerson={addPerson} 
         newName={newName}
