@@ -1,10 +1,20 @@
-const Notification = ( {message} ) => {
+const Notification = ( {message, color} ) => {
   if (message === null) {
     return null
   }
 
+  const notificationStyle = {
+    color: `${color}`,
+    background: 'lightgray',
+    fontSize: 20,
+    borderStyle: 'solid',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+  }
+
   return (
-    <div className="notification">
+    <div style={notificationStyle}>
       {message}
     </div>
   )

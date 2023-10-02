@@ -10,6 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [notificationMessage, setNotificationMessage] = useState(null)
+  const [notificationColor, setNotificationColor] = useState(null)
   const [filter, setFilter] = useState('')
 
   useEffect( () => {
@@ -39,6 +40,11 @@ const App = () => {
               return person
             }))
             setNotificationMessage(`Updated ${newPerson.name}`)
+            setNotificationColor('green')
+          })
+          .catch( error => {
+            setNotificationMessage(`Information of ${newPerson.name} has already been removed from server`)
+            setNotificationColor('red')
           })
       } else {
         return
@@ -49,6 +55,7 @@ const App = () => {
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
           setNotificationMessage(`Added ${newPerson.name}`)
+          setNotificationColor('green')
         })
     }
 
@@ -57,6 +64,7 @@ const App = () => {
     setNewNumber('')
     setTimeout(() => {
       setNotificationMessage(null)
+      setNotificationColor(null)
     }, 5000)
   }
 
@@ -92,7 +100,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notificationMessage}/>
+      <Notification message={notificationMessage} color={notificationColor}/>
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
       <h2>add a new person</h2>
       <PersonForm 
