@@ -1,7 +1,7 @@
 import Country from './Country'
 import CountryInfo from './CountryInfo'
 
-const Content = ({ countries, filter }) => {
+const Content = ({ countries, filter, handler }) => {
   const updatedCountries = countries.filter( (country) => country.name.common.toLowerCase().includes(filter.toLowerCase()) === true)
 
   if (updatedCountries.length >= 10) {
@@ -19,7 +19,7 @@ const Content = ({ countries, filter }) => {
     <div>
       {updatedCountries.map( (country) => {
         return (
-          <Country country={country} key={country.name.common} />
+          <Country key={country.name.common} country={country} handler={() => handler(country.name.common)}/>
         )
       })}
     </div>

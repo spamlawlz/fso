@@ -20,12 +20,16 @@ const App = () => {
     setFilter(event.target.value)
   }
 
+  const overrideFilter = (value) => {
+    setFilter(value)
+  }
+
   return (
     <div>
       {/*  Search Bar  (changes filter state) */}
       <Search filter={filter} handleFilter={handleFilter} />
       {/* Content -> message, list, country info */}
-      <Content countries={countries} filter={filter} />
+      <Content countries={countries} filter={filter} handler={overrideFilter} />
     </div>
   )
 }
